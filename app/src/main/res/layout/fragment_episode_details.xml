@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scroll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey"
         android:orientation="vertical"
         tools:context=".character.details.CharacterDetails">
-
-        <ImageView
-            android:id="@+id/characterImg"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:scaleType="centerCrop"
-            tools:src="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/name"
@@ -30,7 +21,7 @@
             android:textSize="40sp" />
 
         <TextView
-            android:id="@+id/status"
+            android:id="@+id/season"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -40,7 +31,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/species"
+            android:id="@+id/series"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -51,38 +42,29 @@
 
 
         <TextView
-            android:id="@+id/gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="@string/hello_blank_fragment"
-            android:textAlignment="center"
-            android:textColor="@color/toxic_green"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/originName"
+            android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:text="@string/hello_blank_fragment"
-            android:textAlignment="center"
+            android:textAlignment="textEnd"
             android:textColor="@color/toxic_green"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/locationName"
+            android:id="@+id/numberOfCharacters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:text="@string/hello_blank_fragment"
             android:textAlignment="center"
             android:textColor="@color/toxic_green"
-            android:textSize="20sp" />
+            android:textSize="25sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="match_parent" />
 
 
     </LinearLayout>
-</ScrollView>

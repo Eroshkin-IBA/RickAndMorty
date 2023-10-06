@@ -1,8 +1,8 @@
 package com.example.rickandmorty.network.response
 
-data class CharactersPage(
+data class Page<T:Any>(
     val info: Info,
-    val results: List<Character>
+    val results: List<T>
 )
 
 data class Info(

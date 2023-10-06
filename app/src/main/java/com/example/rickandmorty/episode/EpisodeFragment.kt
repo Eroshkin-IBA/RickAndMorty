@@ -1,33 +1,35 @@
-package com.example.rickandmorty.character
+package com.example.rickandmorty.episode
 
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.rickandmorty.R
+import com.example.rickandmorty.character.CharacterAdapter
+import com.example.rickandmorty.character.CharacterViewModel
 import com.example.rickandmorty.databinding.FragmentCharacterBinding
-import com.example.rickandmorty.network.response.Character
+import com.example.rickandmorty.databinding.FragmentEpisodeBinding
 import kotlinx.coroutines.launch
 
+class EpisodeFragment : Fragment() {
+    private lateinit var binding: FragmentEpisodeBinding
+    private lateinit var episodeAdapter: EpisodeAdapter
+    private val viewModel: EpisodeViewModel by viewModels()
 
-class CharacterFragment : Fragment() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    private lateinit var binding: FragmentCharacterBinding
-    private lateinit var characterAdapter: CharacterAdapter
-    private val viewModel: CharacterViewModel by viewModels()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCharacterBinding.inflate(inflater, container, false)
+        binding = FragmentEpisodeBinding.inflate(inflater, container, false)
         val view = binding.root
         setupRecyclerView()
         loadData()
@@ -36,10 +38,10 @@ class CharacterFragment : Fragment() {
 
     private fun setupRecyclerView() {
 
-        characterAdapter = CharacterAdapter()
+        episodeAdapter = EpisodeAdapter()
 
         binding.recyclerView.apply {
-            adapter = characterAdapter
+            adapter = episodeAdapter
             layoutManager = GridLayoutManager(
                 context, 2
             )
@@ -52,10 +54,14 @@ class CharacterFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.listData.collect {
-                characterAdapter.submitData(it)
+
+                Log.d("EpisodeFragment", "load: $it")
+                episodeAdapter.submitData(it)
             }
 
         }
     }
-
 }
+
+
+

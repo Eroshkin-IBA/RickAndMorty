@@ -22,7 +22,7 @@ data class Origin(
     val url: String
 ):Serializable
 
-data class Location(
-    val name: String,
-    val url: String
-):Serializable
+//data class Location(
+//    val name: String,
+//    val url: String
+//):Serializable

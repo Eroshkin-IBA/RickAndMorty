@@ -1,34 +1,29 @@
-package com.example.rickandmorty.character
+package com.example.rickandmorty.episode.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.rickandmorty.Constants
 import com.example.rickandmorty.R
+import com.example.rickandmorty.character.CharacterViewHolder
+import com.example.rickandmorty.character.details.CharacterDetailsEpisodeAdapter
 import com.example.rickandmorty.databinding.CharacterLayoutBinding
+import com.example.rickandmorty.databinding.EpisodeLayoutBinding
 import com.example.rickandmorty.network.response.Character
+import com.example.rickandmorty.network.response.Episode
 
-class CharacterAdapter : PagingDataAdapter<Character,
-        CharacterViewHolder>(diffCallback) {
-
-
-    companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<Character>() {
-            override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean {
-                return oldItem == newItem
-            }
-        }
+class EpisodeDetailsCharacterAdapter(checker: String) :
+    RecyclerView.Adapter<CharacterViewHolder>() {
+    private val checker = checker
+    private val characters: MutableList<Character> = mutableListOf()
+    fun setCharacters(character: List<Character>) {
+        this.characters.clear()
+        this.characters.addAll(character)
+        notifyDataSetChanged()
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         return CharacterViewHolder(
@@ -39,8 +34,12 @@ class CharacterAdapter : PagingDataAdapter<Character,
         )
     }
 
+    override fun getItemCount(): Int {
+        return characters.size
+    }
+
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        val currChar = getItem(position)
+        val currChar = characters[position]
 
         holder.binding.apply {
 
@@ -60,10 +59,17 @@ class CharacterAdapter : PagingDataAdapter<Character,
                     if (currChar != null) {
                         bundle.putInt(Constants.CHARACTER, currChar.id)
                     }
-                    findNavController().navigate(
-                        R.id.action_characterFragment_to_characterDetails,
-                        bundle
-                    )
+                    when (checker) {
+                        Constants.EPISODE -> findNavController().navigate(
+                            R.id.action_episodeDetails_to_characterDetails,
+                            bundle
+                        )
+                        Constants.LOCATION ->findNavController().navigate(
+                            R.id.action_locationDetailsFragment_to_characterDetails,
+                            bundle
+                        )
+                    }
+
                 }
 
             }
@@ -74,4 +80,3 @@ class CharacterAdapter : PagingDataAdapter<Character,
 
 
 }
-

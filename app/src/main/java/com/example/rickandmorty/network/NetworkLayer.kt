@@ -12,13 +12,9 @@ import javax.inject.Singleton
 private const val BASE_URL = "https://rickandmortyapi.com/api/"
 object AppModule {
 
-
-    fun provideBaseUrl() = Constants.BASE_URL
-
-
-    fun provideRetrofitInstance(BASE_URL: String): ApiService =
+    fun provideRetrofitInstance(): ApiService =
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
