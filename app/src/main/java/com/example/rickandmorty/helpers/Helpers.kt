@@ -1,5 +1,18 @@
 package com.example.rickandmorty.helpers
 
+import android.view.View
+import com.example.rickandmorty.dao.entity.CharacterEntity
+import com.example.rickandmorty.dao.entity.EpisodeEntity
+import com.example.rickandmorty.dao.entity.LocationEntity
+import com.example.rickandmorty.network.response.Character
+import com.example.rickandmorty.network.response.Episode
+import com.example.rickandmorty.network.response.Location
+import com.example.rickandmorty.network.response.Origin
+import android.widget.ImageView
+import android.widget.ProgressBar
+import coil.ImageLoader
+import coil.request.ImageRequest
+
 fun extractIdFromUri(uri: String): Int {
     val lastSegment = uri.substringAfterLast("/")
     return lastSegment.toInt()
@@ -16,4 +29,118 @@ fun extractSeasonAndEpisode(input: String): Pair<String, String>? {
     } else {
         null
     }
+}
+
+fun convertCharacterListToEntityList(characters: List<Character>): List<CharacterEntity> {
+    return characters.map { character ->
+        CharacterEntity(
+            characterId = character.id,
+            name = character.name,
+            status = character.status,
+            species = character.species,
+            type = character.type,
+            gender = character.gender,
+            location = character.location.name,
+            locationUri = character.location.url,
+            image = character.image,
+            episodes = character.episode.joinToString(", "),
+            url = character.url,
+            created = character.created
+        )
+    }
+}
+
+fun convertToEpisodeEntities(episodes: List<Episode>): List<EpisodeEntity> {
+    return episodes.map {
+        EpisodeEntity(
+            it.air_date,
+            it.characters.joinToString(", "),
+            it.created,
+            it.episode,
+            it.id,
+            it.name,
+            it.url
+        )
+    }
+}
+
+fun convertToLocationEntities(locations: List<Location>): List<LocationEntity> {
+    return locations.map {
+        LocationEntity(
+            id = it.id,
+            created = it.created,
+            dimension = it.dimension,
+            name = it.name,
+            residents = it.residents.joinToString(", "),
+            type = it.type,
+            url = it.url
+        )
+    }
+}
+
+fun characterEntityToCharacter(characterEntity: CharacterEntity): Character {
+
+    return Character(
+        characterEntity.characterId,
+        characterEntity.name,
+        characterEntity.status,
+        characterEntity.species,
+        characterEntity.type,
+        characterEntity.gender,
+        Origin(),
+        Location(name = characterEntity.location, url = characterEntity.locationUri),
+        characterEntity.image,
+        characterEntity.episodes.split(", "),
+        characterEntity.url,
+        characterEntity.created
+    )
+}
+
+fun episodeEntityToEpisode(entity: EpisodeEntity): Episode {
+    return Episode(
+        air_date = entity.air_date,
+        characters = entity.characters.split(", "),
+        created = entity.created,
+        episode = entity.episode,
+        id = entity.id,
+        name = entity.name,
+        url = entity.url
+    )
+}
+
+fun locationEntityToLocation(locationEntity: LocationEntity): Location {
+    return Location(
+        created = locationEntity.created,
+        dimension = locationEntity.dimension,
+        id = locationEntity.id,
+        name = locationEntity.name,
+        residents = locationEntity.residents.split(", "),
+        type = locationEntity.type,
+        url = locationEntity.url
+    )
+}
+
+fun ImageView.loadWithFallback(
+    imageUrl: String,
+    errorResId1: ProgressBar,
+    crossfade: Boolean,
+    crossfadeDuration: Int,
+    ) {
+    val request = ImageRequest.Builder(context)
+        .data(imageUrl)
+        .target(
+            onSuccess = { result ->
+                setImageDrawable(result)
+                visibility = View.VISIBLE
+                errorResId1.visibility = View.GONE
+            },
+            onError = {
+                visibility = View.GONE
+                errorResId1.visibility = View.VISIBLE
+            }
+        )
+        .crossfade(crossfade)
+        .crossfade(crossfadeDuration)
+        .build()
+
 }

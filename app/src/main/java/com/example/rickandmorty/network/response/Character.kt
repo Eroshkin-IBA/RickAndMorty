@@ -1,6 +1,10 @@
 package com.example.rickandmorty.network.response
 
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
+
 
 data class Character(
     val id: Int,
@@ -15,14 +19,10 @@ data class Character(
     val episode: List<String>,
     val url: String,
     val created: String
-):Serializable
+) : Serializable
 
 data class Origin(
-    val name: String,
-    val url: String
-):Serializable
+    val name: String ="",
+    val url: String = ""
+) : Serializable
 
-//data class Location(
-//    val name: String,
-//    val url: String
-//):Serializable

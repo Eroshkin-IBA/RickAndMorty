@@ -22,6 +22,21 @@ interface ApiService {
         @Query("page") pageIndex: Int
     ): Response<Page<Character>>
 
+    @GET("${Constants.CHARACTER}/")
+    suspend fun getCharactersPage(
+        @Query("page") pageIndex: Int,
+        @Query("name") characterName: String,
+        @Query("gender") characterGender: String,
+        @Query("status") characterStatus: String,
+        @Query("species") characterSpecies: String
+    ): Response<Page<Character>>
+
+    @GET("${Constants.EPISODE}/")
+    suspend fun getEpisodesPage(
+        @Query("page") pageIndex: Int,
+        @Query("name") episodeName: String
+    ): Response<Page<Episode>>
+
     @GET("${Constants.EPISODE}/")
     suspend fun getEpisodesPage(
         @Query("page") pageIndex: Int
@@ -30,6 +45,12 @@ interface ApiService {
     @GET("${Constants.LOCATION}/")
     suspend fun getLocationsPage(
         @Query("page") pageIndex: Int
+    ): Response<Page<Location>>
+
+    @GET("${Constants.LOCATION}/")
+    suspend fun getLocationsPage(
+        @Query("page") pageIndex: Int,
+        @Query("name") locationName: String
     ): Response<Page<Location>>
 
     @GET("${Constants.LOCATION}/{location-id}")

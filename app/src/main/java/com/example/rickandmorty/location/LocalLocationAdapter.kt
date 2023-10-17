@@ -4,30 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import com.example.rickandmorty.Constants
 import com.example.rickandmorty.R
+import com.example.rickandmorty.dao.entity.LocationEntity
 import com.example.rickandmorty.databinding.LocationLayoutBinding
-import com.example.rickandmorty.network.response.Location
 
-class LocationAdapter : PagingDataAdapter<Location,
-        LocationViewHolder>(diffCallback) {
-
-
-
-    companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<Location>() {
-            override fun areItemsTheSame(oldItem: Location, newItem: Location): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: Location, newItem: Location): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
+class LocalLocationAdapter :
+    ListAdapter<LocationEntity, LocationViewHolder>(LocalLocationAdapter.DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
         return LocationViewHolder(
@@ -51,12 +36,31 @@ class LocationAdapter : PagingDataAdapter<Location,
                     if (currLocation != null) {
                         bundle.putInt(Constants.LOCATION, currLocation.id)
                     }
-                    findNavController().navigate(R.id.action_locationFragment_to_locationDetailsFragment, bundle)
+                    findNavController().navigate(
+                        R.id.action_locationFragment_to_locationDetailsFragment,
+                        bundle
+                    )
                 }
 
             }
         }
     }
 
+    companion object {
+        private val DiffCallback = object : DiffUtil.ItemCallback<LocationEntity>() {
+            override fun areItemsTheSame(
+                oldItem: LocationEntity,
+                newItem: LocationEntity
+            ): Boolean {
+                return oldItem === newItem
+            }
 
+            override fun areContentsTheSame(
+                oldItem: LocationEntity,
+                newItem: LocationEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
 }

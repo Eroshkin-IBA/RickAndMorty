@@ -1,13 +1,11 @@
 package com.example.rickandmorty.network
 
+import android.content.Context
+import android.net.ConnectivityManager
 import com.example.rickandmorty.Constants
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
+
 
 private const val BASE_URL = "https://rickandmortyapi.com/api/"
 object AppModule {
@@ -20,4 +18,10 @@ object AppModule {
             .create(ApiService::class.java)
 
 
+}
+
+fun isOnline(context: Context): Boolean {
+    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val netInfo = cm.activeNetworkInfo
+    return netInfo != null && netInfo.isConnectedOrConnecting
 }

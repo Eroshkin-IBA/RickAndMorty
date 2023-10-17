@@ -51,8 +51,8 @@ class EpisodeDetailsCharacterAdapter(checker: String) :
 
                 val imageLink = currChar?.image
                 imageView.load(imageLink) {
-                    crossfade(true)
-                    crossfade(1000)
+                    placeholder(R.drawable.loading_animation)
+                    error(R.drawable.ic_broken_image)
                 }
                 setOnClickListener {
                     val bundle = Bundle()

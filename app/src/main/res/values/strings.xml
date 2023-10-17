@@ -5,4 +5,28 @@
     <string name="character">Character</string>
     <string name="location">Location</string>
     <string name="episode">Episode</string>
+    <string name="searchAnswer">Nothing to show</string>
+    <string name="resetFilter">reset filter</string>
+    <string-array name="gender">
+        <item></item>
+        <item>female</item>
+        <item>male</item>
+        <item>genderless</item>
+        <item>unknown</item>
+    </string-array>
+    <string-array name="status">
+        <item></item>
+        <item>alive</item>
+        <item>dead</item>
+        <item>unknown</item>
+    </string-array>
+    <string-array name="species">
+        <item></item>
+        <item>Human</item>
+        <item>alien</item>
+        <item>unknown</item>
+        <item>Humanoid</item>
+        <item>Animal</item>
+        <item>Robot</item>
+    </string-array>
 </resources>

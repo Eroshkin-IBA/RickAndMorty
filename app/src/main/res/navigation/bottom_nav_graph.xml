@@ -10,34 +10,36 @@
         android:id="@+id/episodeFragment"
         android:name="com.example.rickandmorty.episode.EpisodeFragment"
         android:label="fragment_episode"
-        tools:layout="@layout/fragment_episode" >
+        tools:layout="@layout/fragment_episode">
         <action
             android:id="@+id/action_episodeFragment_to_episodeDetails"
             app:destination="@id/episodeDetails"
             app:popUpTo="@id/episodeFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
         android:id="@+id/locationFragment"
         android:name="com.example.rickandmorty.location.LocationFragment"
         android:label="fragment_location"
-        tools:layout="@layout/fragment_location" >
+        tools:layout="@layout/fragment_location">
         <action
             android:id="@+id/action_locationFragment_to_locationDetailsFragment"
             app:destination="@id/locationDetailsFragment"
             app:popUpTo="@id/locationFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/characterFragment"
         android:name="com.example.rickandmorty.character.CharacterFragment"
-        android:label="@layout/fragment_character">
+        android:label="Characters"
+        app:startDestination="@+id/characterDetails">
+
         <action
             android:id="@+id/action_characterFragment_to_characterDetails"
             app:destination="@id/characterDetails"
             app:popUpTo="@id/characterFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
 
     </fragment>
     <fragment
@@ -45,31 +47,36 @@
         android:name="com.example.rickandmorty.character.details.CharacterDetails"
         android:label="fragment_character_details"
         tools:layout="@layout/fragment_character_details">
-        <argument
-            android:name="character"
-            app:argType="com.example.rickandmorty.network.response.Character" />
         <action
             android:id="@+id/action_characterDetails_to_episodeDetails"
-            app:destination="@id/episodeDetails" />
+            app:destination="@id/episodeDetails"
+            app:popUpTo="@id/characterDetails"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_characterDetails_to_locationDetailsFragment"
+            app:destination="@id/locationDetailsFragment"
+            app:popUpTo="@id/characterDetails"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/episodeDetails"
         android:name="com.example.rickandmorty.episode.details.EpisodeDetails"
-        android:label="EpisodeDetails" >
+        android:label="EpisodeDetails">
         <action
             android:id="@+id/action_episodeDetails_to_characterDetails"
             app:destination="@id/characterDetails"
             app:popUpTo="@id/episodeDetails"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/locationDetailsFragment"
         android:name="com.example.rickandmorty.location.details.LocationDetailsFragment"
-        android:label="LocationDetailsFragment" >
+        android:label="LocationDetailsFragment">
         <action
             android:id="@+id/action_locationDetailsFragment_to_characterDetails"
             app:destination="@id/characterDetails"
-            app:popUpTo="@id/locationDetailsFragment" />
+            app:popUpTo="@id/locationDetailsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

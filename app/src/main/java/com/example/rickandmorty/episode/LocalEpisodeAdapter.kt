@@ -4,32 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import com.example.rickandmorty.Constants
 import com.example.rickandmorty.R
+import com.example.rickandmorty.dao.entity.CharacterEntity
+import com.example.rickandmorty.dao.entity.EpisodeEntity
 import com.example.rickandmorty.databinding.EpisodeLayoutBinding
 import com.example.rickandmorty.helpers.extractSeasonAndEpisode
-import com.example.rickandmorty.network.response.Episode
 
-class EpisodeAdapter : PagingDataAdapter<Episode,
-        EpisodeViewHolder>(diffCallback) {
-
-
-    companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<Episode>() {
-            override fun areItemsTheSame(oldItem: Episode, newItem: Episode): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: Episode, newItem: Episode): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
-
-
+class LocalEpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeViewHolder>(DiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
         return EpisodeViewHolder(
             EpisodeLayoutBinding.inflate(
@@ -48,7 +32,7 @@ class EpisodeAdapter : PagingDataAdapter<Episode,
                 name.text = currEpisode?.name
                 season.text = formattedSeason
                 series.text = formattedSeries
-                numOfCharacters.text = "${currEpisode?.characters?.size} characters"
+                numOfCharacters.text = "${currEpisode.characters.split(", ").size} characters"
                 date.text = currEpisode?.air_date
 
 
@@ -65,5 +49,22 @@ class EpisodeAdapter : PagingDataAdapter<Episode,
         }
     }
 
-}
+    companion object {
+        private val DiffCallback = object : DiffUtil.ItemCallback<EpisodeEntity>() {
+            override fun areItemsTheSame(
+                oldItem: EpisodeEntity,
+                newItem: EpisodeEntity
+            ): Boolean {
+                return oldItem === newItem
+            }
 
+            override fun areContentsTheSame(
+                oldItem: EpisodeEntity,
+                newItem: EpisodeEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
+
+}
