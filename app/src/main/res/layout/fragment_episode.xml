@@ -92,9 +92,6 @@
                 android:layout_height="wrap_content"
                 android:hint="Status" />
 
-
-
-            <!-- Apply Button -->
             <Button
                 android:id="@+id/btnApplyFilter"
                 app:layout_constraintEnd_toEndOf="parent"

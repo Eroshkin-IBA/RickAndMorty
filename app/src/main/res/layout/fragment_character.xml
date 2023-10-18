@@ -149,7 +149,6 @@
                 app:layout_constraintStart_toEndOf="@+id/textGender"
                 app:layout_constraintTop_toBottomOf="@+id/spinnerSpecies" />
 
-            <!-- Apply Button -->
             <Button
                 android:id="@+id/btnApplyFilter"
                 android:layout_width="wrap_content"

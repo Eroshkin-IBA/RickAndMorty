@@ -5,5 +5,4 @@
     android:padding="5dp"
     android:textColor="@color/toxic_green"
     android:textSize="20sp">
-
 </CheckedTextView>
