@@ -9,11 +9,8 @@ import coil.load
 import com.example.rickandmorty.Constants
 import com.example.rickandmorty.R
 import com.example.rickandmorty.character.CharacterViewHolder
-import com.example.rickandmorty.character.details.CharacterDetailsEpisodeAdapter
 import com.example.rickandmorty.databinding.CharacterLayoutBinding
-import com.example.rickandmorty.databinding.EpisodeLayoutBinding
 import com.example.rickandmorty.network.response.Character
-import com.example.rickandmorty.network.response.Episode
 
 class EpisodeDetailsCharacterAdapter(checker: String) :
     RecyclerView.Adapter<CharacterViewHolder>() {
@@ -40,15 +37,12 @@ class EpisodeDetailsCharacterAdapter(checker: String) :
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val currChar = characters[position]
-
         holder.binding.apply {
-
             holder.itemView.apply {
                 name.text = "${currChar?.name}"
                 species.text = "Species: ${currChar?.species}"
                 status.text = "Status: ${currChar?.status}"
                 gender.text = "Gender: ${currChar?.gender}"
-
                 val imageLink = currChar?.image
                 imageView.load(imageLink) {
                     placeholder(R.drawable.loading_animation)
@@ -64,19 +58,14 @@ class EpisodeDetailsCharacterAdapter(checker: String) :
                             R.id.action_episodeDetails_to_characterDetails,
                             bundle
                         )
-                        Constants.LOCATION ->findNavController().navigate(
+
+                        Constants.LOCATION -> findNavController().navigate(
                             R.id.action_locationDetailsFragment_to_characterDetails,
                             bundle
                         )
                     }
-
                 }
-
             }
-
         }
-
     }
-
-
 }

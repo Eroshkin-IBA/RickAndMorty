@@ -1,6 +1,5 @@
 package com.example.rickandmorty.helpers
 
-import android.view.View
 import com.example.rickandmorty.dao.entity.CharacterEntity
 import com.example.rickandmorty.dao.entity.EpisodeEntity
 import com.example.rickandmorty.dao.entity.LocationEntity
@@ -8,10 +7,6 @@ import com.example.rickandmorty.network.response.Character
 import com.example.rickandmorty.network.response.Episode
 import com.example.rickandmorty.network.response.Location
 import com.example.rickandmorty.network.response.Origin
-import android.widget.ImageView
-import android.widget.ProgressBar
-import coil.ImageLoader
-import coil.request.ImageRequest
 
 fun extractIdFromUri(uri: String): Int {
     val lastSegment = uri.substringAfterLast("/")
@@ -21,7 +16,6 @@ fun extractIdFromUri(uri: String): Int {
 fun extractSeasonAndEpisode(input: String): Pair<String, String>? {
     val seasonPattern = Regex("S(\\d+)E(\\d+)")
     val matchResult = seasonPattern.find(input)
-
     return if (matchResult != null && matchResult.groupValues.size == 3) {
         val seasonNumber = matchResult.groupValues[1]
         val episodeNumber = matchResult.groupValues[2]
@@ -79,7 +73,6 @@ fun convertToLocationEntities(locations: List<Location>): List<LocationEntity> {
 }
 
 fun characterEntityToCharacter(characterEntity: CharacterEntity): Character {
-
     return Character(
         characterEntity.characterId,
         characterEntity.name,
@@ -120,27 +113,3 @@ fun locationEntityToLocation(locationEntity: LocationEntity): Location {
     )
 }
 
-fun ImageView.loadWithFallback(
-    imageUrl: String,
-    errorResId1: ProgressBar,
-    crossfade: Boolean,
-    crossfadeDuration: Int,
-    ) {
-    val request = ImageRequest.Builder(context)
-        .data(imageUrl)
-        .target(
-            onSuccess = { result ->
-                setImageDrawable(result)
-                visibility = View.VISIBLE
-                errorResId1.visibility = View.GONE
-            },
-            onError = {
-                visibility = View.GONE
-                errorResId1.visibility = View.VISIBLE
-            }
-        )
-        .crossfade(crossfade)
-        .crossfade(crossfadeDuration)
-        .build()
-
-}

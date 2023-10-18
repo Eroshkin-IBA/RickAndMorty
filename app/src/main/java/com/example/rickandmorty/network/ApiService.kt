@@ -10,7 +10,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-
 interface ApiService {
     @GET("${Constants.CHARACTER}/{character-id}")
     suspend fun getCharacterById(
@@ -34,7 +33,8 @@ interface ApiService {
     @GET("${Constants.EPISODE}/")
     suspend fun getEpisodesPage(
         @Query("page") pageIndex: Int,
-        @Query("name") episodeName: String
+        @Query("name") episodeName: String,
+        @Query("episode") episode: String,
     ): Response<Page<Episode>>
 
     @GET("${Constants.EPISODE}/")
@@ -50,7 +50,9 @@ interface ApiService {
     @GET("${Constants.LOCATION}/")
     suspend fun getLocationsPage(
         @Query("page") pageIndex: Int,
-        @Query("name") locationName: String
+        @Query("name") locationName: String,
+        @Query("type") locationType: String,
+        @Query("dimension") locationDimension: String
     ): Response<Page<Location>>
 
     @GET("${Constants.LOCATION}/{location-id}")

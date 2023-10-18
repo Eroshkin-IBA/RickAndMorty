@@ -18,8 +18,7 @@ import com.example.rickandmorty.helpers.Filter
 import com.example.rickandmorty.network.isOnline
 import kotlinx.coroutines.launch
 
-class CharacterFragment : Fragment() {
-
+class CharacterFragment : Fragment(R.layout.fragment_character) {
     private lateinit var binding: FragmentCharacterBinding
     private val characterAdapter by lazy { CharacterAdapter() }
     private val localCharacterAdapter by lazy { LocalCharacterAdapter() }
@@ -27,7 +26,6 @@ class CharacterFragment : Fragment() {
         CharacterViewModelFactory(AppDatabase.getDataBase(requireContext()))
     }
     private lateinit var searchFilter: Filter
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,14 +38,12 @@ class CharacterFragment : Fragment() {
             R.layout.spinner_layout
         )
         genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown)
-
         val speciesAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.species,
             R.layout.spinner_layout
         )
         speciesAdapter.setDropDownViewResource(R.layout.spinner_dropdown)
-
         val statusAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.status,
@@ -77,6 +73,12 @@ class CharacterFragment : Fragment() {
                 }
             })
             swipeRefreshLayout.setOnRefreshListener {
+                noInternet.visibility = View.GONE
+                spinnerGender.setSelection(0)
+                spinnerStatus.setSelection(0)
+                spinnerSpecies.setSelection(0)
+                searchFilter.resetFilter()
+                resetFilterBtn.visibility = View.GONE
                 searchView.setQuery("", false)
                 loadData()
                 noInternetMessage()
@@ -100,7 +102,6 @@ class CharacterFragment : Fragment() {
                 resetFilterBtn.visibility = View.GONE
             }
         }
-
         setupRecyclerView()
         loadData()
         noInternetMessage()
@@ -159,12 +160,7 @@ class CharacterFragment : Fragment() {
 
     private fun noInternetMessage() {
         if (!isOnline(requireContext())) {
-            Toast.makeText(
-                requireContext(),
-                "there is no connection",
-                Toast.LENGTH_SHORT
-            ).show()
+            binding.noInternet.visibility = View.VISIBLE
         }
     }
-
 }

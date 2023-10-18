@@ -14,8 +14,6 @@ import com.example.rickandmorty.network.response.Character
 
 class CharacterAdapter : PagingDataAdapter<Character,
         CharacterViewHolder>(diffCallback) {
-
-
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<Character>() {
             override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean {
@@ -28,7 +26,6 @@ class CharacterAdapter : PagingDataAdapter<Character,
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         return CharacterViewHolder(
             CharacterLayoutBinding.inflate(
@@ -40,15 +37,12 @@ class CharacterAdapter : PagingDataAdapter<Character,
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val currChar = getItem(position)
-
         holder.binding.apply {
-
             holder.itemView.apply {
                 name.text = "${currChar?.name}"
                 species.text = "Species: ${currChar?.species}"
                 status.text = "Status: ${currChar?.status}"
                 gender.text = "Gender: ${currChar?.gender}"
-
                 val imageLink = currChar?.image
                 imageView.load(imageLink) {
                     placeholder(R.drawable.loading_animation)
@@ -64,13 +58,8 @@ class CharacterAdapter : PagingDataAdapter<Character,
                         bundle
                     )
                 }
-
             }
-
         }
-
     }
-
-
 }
 

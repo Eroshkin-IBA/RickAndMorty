@@ -16,20 +16,15 @@ import com.example.rickandmorty.network.response.Character
 import com.example.rickandmorty.paging.RickyMortyPagingSource
 import kotlinx.coroutines.flow.Flow
 
-
 class CharacterViewModel(private val appDatabase: AppDatabase) : ViewModel() {
-
     val listData = Pager(PagingConfig(pageSize = 1)) {
         RickyMortyPagingSource<Character>(
             AppModule.provideRetrofitInstance(),
             Constants.CHARACTER,
             appDatabase
         )
-
     }.flow.cachedIn(viewModelScope)
-
     var localListData = appDatabase.characterDao().getAllCharacterEntities()
-
     fun searchCharacter(filter: Filter): Flow<PagingData<Character>> {
         return Pager(PagingConfig(pageSize = 1)) {
             RickyMortyPagingSource<Character>(
@@ -45,7 +40,6 @@ class CharacterViewModel(private val appDatabase: AppDatabase) : ViewModel() {
         return appDatabase.characterDao()
             .getCharactersByFilter(filter.name, filter.gender, filter.status, filter.species)
     }
-
 }
 
 class CharacterViewModelFactory(private val appDatabase: AppDatabase) : ViewModelProvider.Factory {

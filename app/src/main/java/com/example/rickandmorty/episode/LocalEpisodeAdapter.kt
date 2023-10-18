@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.rickandmorty.Constants
 import com.example.rickandmorty.R
-import com.example.rickandmorty.dao.entity.CharacterEntity
 import com.example.rickandmorty.dao.entity.EpisodeEntity
 import com.example.rickandmorty.databinding.EpisodeLayoutBinding
 import com.example.rickandmorty.helpers.extractSeasonAndEpisode
@@ -26,7 +25,6 @@ class LocalEpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeViewHolder>(DiffCa
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
         val currEpisode = getItem(position)
         val (formattedSeason, formattedSeries) = currEpisode?.let { extractSeasonAndEpisode(it.episode) }!!
-
         holder.binding.apply {
             holder.itemView.apply {
                 name.text = currEpisode?.name
@@ -34,8 +32,6 @@ class LocalEpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeViewHolder>(DiffCa
                 series.text = formattedSeries
                 numOfCharacters.text = "${currEpisode.characters.split(", ").size} characters"
                 date.text = currEpisode?.air_date
-
-
                 setOnClickListener {
                     val bundle = Bundle()
                     bundle.putInt(Constants.EPISODE, currEpisode.id)
@@ -44,7 +40,6 @@ class LocalEpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeViewHolder>(DiffCa
                         bundle
                     )
                 }
-
             }
         }
     }
@@ -66,5 +61,4 @@ class LocalEpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeViewHolder>(DiffCa
             }
         }
     }
-
 }

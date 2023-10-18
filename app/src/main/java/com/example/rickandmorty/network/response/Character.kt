@@ -1,11 +1,6 @@
 package com.example.rickandmorty.network.response
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import java.io.Serializable
-
-
 data class Character(
     val id: Int,
     val name: String,

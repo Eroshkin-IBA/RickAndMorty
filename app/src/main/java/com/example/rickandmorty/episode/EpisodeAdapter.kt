@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.Constants
 import com.example.rickandmorty.R
 import com.example.rickandmorty.databinding.EpisodeLayoutBinding
@@ -15,8 +14,6 @@ import com.example.rickandmorty.network.response.Episode
 
 class EpisodeAdapter : PagingDataAdapter<Episode,
         EpisodeViewHolder>(diffCallback) {
-
-
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<Episode>() {
             override fun areItemsTheSame(oldItem: Episode, newItem: Episode): Boolean {
@@ -28,7 +25,6 @@ class EpisodeAdapter : PagingDataAdapter<Episode,
             }
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
         return EpisodeViewHolder(
@@ -42,7 +38,6 @@ class EpisodeAdapter : PagingDataAdapter<Episode,
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
         val currEpisode = getItem(position)
         val (formattedSeason, formattedSeries) = currEpisode?.let { extractSeasonAndEpisode(it.episode) }!!
-
         holder.binding.apply {
             holder.itemView.apply {
                 name.text = currEpisode?.name
@@ -50,8 +45,6 @@ class EpisodeAdapter : PagingDataAdapter<Episode,
                 series.text = formattedSeries
                 numOfCharacters.text = "${currEpisode?.characters?.size} characters"
                 date.text = currEpisode?.air_date
-
-
                 setOnClickListener {
                     val bundle = Bundle()
                     bundle.putInt(Constants.EPISODE, currEpisode.id)
@@ -60,10 +53,8 @@ class EpisodeAdapter : PagingDataAdapter<Episode,
                         bundle
                     )
                 }
-
             }
         }
     }
-
 }
 

@@ -13,7 +13,6 @@ import com.example.rickandmorty.databinding.LocationLayoutBinding
 
 class LocalLocationAdapter :
     ListAdapter<LocationEntity, LocationViewHolder>(LocalLocationAdapter.DiffCallback) {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
         return LocationViewHolder(
             LocationLayoutBinding.inflate(
@@ -30,7 +29,6 @@ class LocalLocationAdapter :
                 name.text = currLocation?.name
                 type.text = currLocation?.type
                 dimension.text = currLocation?.dimension
-
                 setOnClickListener {
                     val bundle = Bundle()
                     if (currLocation != null) {

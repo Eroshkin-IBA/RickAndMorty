@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/episode_nav_graph"
+    app:startDestination="@id/episodeFragment">
+
+    <fragment
+        android:id="@+id/episodeDetails"
+        android:name="com.example.rickandmorty.episode.details.EpisodeDetails"
+        android:label="EpisodeDetails" >
+        <action
+            android:id="@+id/action_episodeDetails_to_characterDetails"
+            app:destination="@id/characterDetails"
+            app:popUpTo="@id/episodeDetails"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/episodeFragment"
+        android:name="com.example.rickandmorty.episode.EpisodeFragment"
+        android:label="EpisodeFragment" >
+        <action
+            android:id="@+id/action_episodeFragment_to_episodeDetails"
+            app:destination="@id/episodeDetails"
+            app:popUpTo="@id/episodeFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterDetails"
+        android:name="com.example.rickandmorty.character.details.CharacterDetails"
+        android:label="CharacterDetails" >
+        <action
+            android:id="@+id/action_characterDetails_to_locationDetailsFragment"
+            app:destination="@id/locationDetailsFragment"
+            app:popUpTo="@id/characterDetails"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_characterDetails_to_episodeDetails"
+            app:destination="@id/episodeDetails"
+            app:popUpTo="@id/characterDetails"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationDetailsFragment"
+        android:name="com.example.rickandmorty.location.details.LocationDetailsFragment"
+        android:label="LocationDetailsFragment" >
+        <action
+            android:id="@+id/action_locationDetailsFragment_to_characterDetails"
+            app:destination="@id/characterDetails"
+            app:popUpTo="@id/locationDetailsFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+</navigation>

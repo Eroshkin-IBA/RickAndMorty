@@ -1,10 +1,7 @@
 package com.example.rickandmorty.dao.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 
 @Entity
 data class CharacterEntity(
@@ -23,17 +20,6 @@ data class CharacterEntity(
 )
 
 @Entity
-data class OriginEntity(
-    @ColumnInfo(name = "origin_name")
-    val name: String,
-    @ColumnInfo(name = "origin_url")
-    val url: String
-) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
-}
-
-@Entity
 data class EpisodeEntity(
     val air_date: String,
     val characters: String,
@@ -41,8 +27,7 @@ data class EpisodeEntity(
     val episode: String,
     @PrimaryKey val id: Int,
     val name: String,
-    val url: String,
-
+    val url: String
 )
 
 @Entity

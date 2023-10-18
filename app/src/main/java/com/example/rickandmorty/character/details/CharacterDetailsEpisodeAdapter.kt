@@ -13,7 +13,6 @@ import com.example.rickandmorty.network.response.Episode
 
 class CharacterDetailsEpisodeAdapter :
     RecyclerView.Adapter<CharacterDetailsEpisodeAdapter.EpisodeViewHolder>() {
-
     private val episodes: MutableList<Episode> = mutableListOf()
     fun setEpisodes(episodes: List<Episode>) {
         this.episodes.clear()
@@ -40,7 +39,6 @@ class CharacterDetailsEpisodeAdapter :
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
         val currEpisode = episodes[position]
         val (formattedSeason, formattedSeries) = extractSeasonAndEpisode(currEpisode.episode)!!
-
         holder.binding.apply {
             holder.itemView.apply {
                 name.text = currEpisode.name
@@ -48,7 +46,6 @@ class CharacterDetailsEpisodeAdapter :
                 series.text = formattedSeries
                 numOfCharacters.text = "${currEpisode.characters.size} characters"
                 date.text = currEpisode.air_date
-
                 setOnClickListener {
                     val bundle = Bundle()
                     bundle.putInt(Constants.EPISODE, currEpisode.id)

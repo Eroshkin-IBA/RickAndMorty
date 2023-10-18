@@ -1,7 +1,6 @@
 package com.example.rickandmorty.episode.details
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,19 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmorty.BaseFragment
 import com.example.rickandmorty.Constants
-import com.example.rickandmorty.R
-import com.example.rickandmorty.character.details.CharacterDetailsEpisodeAdapter
-import com.example.rickandmorty.character.details.CharacterDetailsViewModel
 import com.example.rickandmorty.dao.AppDatabase
-import com.example.rickandmorty.databinding.FragmentCharacterDetailsBinding
 import com.example.rickandmorty.databinding.FragmentEpisodeDetailsBinding
 import com.example.rickandmorty.helpers.extractSeasonAndEpisode
 import com.example.rickandmorty.network.isOnline
-import com.example.rickandmorty.network.response.Character
 import com.example.rickandmorty.network.response.Episode
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-
 
 class EpisodeDetails : BaseFragment() {
     private lateinit var binding: FragmentEpisodeDetailsBinding
@@ -30,8 +22,6 @@ class EpisodeDetails : BaseFragment() {
         EpisodeDetailsViewModelFactory(AppDatabase.getDataBase(requireContext()))
     }
     private lateinit var characterAdapter: EpisodeDetailsCharacterAdapter
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +32,7 @@ class EpisodeDetails : BaseFragment() {
         noInternetMessage()
         loadEpisode(episodeId!!)
         binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.noInternet.visibility = View.GONE
             loadEpisode(episodeId)
             noInternetMessage()
             binding.swipeRefreshLayout.isRefreshing = false
@@ -74,16 +65,18 @@ class EpisodeDetails : BaseFragment() {
         }
     }
 
-
     private fun loadCharacters(episode: Episode) {
         lifecycleScope.launch {
             viewModel.getCharacterForEpisode(episode, isOnline(requireContext()))
                 .collect { characters ->
                     characterAdapter.setCharacters(characters)
-                    println(characters)
                 }
-
         }
     }
 
+    private fun noInternetMessage() {
+        if (!isOnline(requireContext())) {
+            binding.noInternet.visibility = View.VISIBLE
+        }
+    }
 }

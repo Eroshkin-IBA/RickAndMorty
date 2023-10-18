@@ -47,7 +47,7 @@ class RickyMortyPagingSource<T : Any>
 
                 Constants.EPISODE -> {
                     if (filter.isAnyFieldFilled()) {
-                        apiService.getEpisodesPage(currentPage, filter.name)
+                        apiService.getEpisodesPage(currentPage, filter.name, "s" + filter.season)
                     } else {
                         apiService.getEpisodesPage(currentPage)
                     }
@@ -55,7 +55,12 @@ class RickyMortyPagingSource<T : Any>
 
                 Constants.LOCATION -> {
                     if (filter.isAnyFieldFilled()) {
-                        apiService.getLocationsPage(currentPage, filter.name)
+                        apiService.getLocationsPage(
+                            currentPage,
+                            filter.name,
+                            filter.type,
+                            filter.dimension
+                        )
                     } else {
                         apiService.getLocationsPage(currentPage)
                     }
@@ -66,7 +71,6 @@ class RickyMortyPagingSource<T : Any>
             val responseData = mutableListOf<T>()
             val data = response.body()?.results?.map { it as T } ?: emptyList()
             responseData.addAll(data)
-
             withContext(Dispatchers.IO) {
                 when (entityType) {
                     Constants.CHARACTER -> {
@@ -85,7 +89,6 @@ class RickyMortyPagingSource<T : Any>
                     }
                 }
             }
-
             LoadResult.Page(
                 data = responseData,
                 prevKey = if (currentPage == 1) null else -1,
@@ -94,6 +97,5 @@ class RickyMortyPagingSource<T : Any>
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
-
     }
 }

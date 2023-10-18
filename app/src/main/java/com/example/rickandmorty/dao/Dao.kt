@@ -11,12 +11,19 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CharacterDao {
+    @Query(
+        "SELECT * FROM characterEntity WHERE name LIKE '%' || :name || '%' " +
+                "AND gender LIKE '%' || :gender || '%' " +
+                "AND status LIKE '%' || :status || '%' " +
+                "AND species LIKE '%' || :species || '%'"
+    )
+    fun getCharactersByFilter(
+        name: String,
+        gender: String,
+        status: String,
+        species: String
+    ): Flow<List<CharacterEntity>>
 
-    @Query("SELECT * FROM characterEntity WHERE name LIKE '%' || :name || '%' " +
-            "AND gender LIKE '%' || :gender || '%' " +
-            "AND status LIKE '%' || :status || '%' " +
-            "AND species LIKE '%' || :species || '%'")
-    fun getCharactersByFilter(name: String, gender: String, status: String, species: String): Flow<List<CharacterEntity>>
     @Query("SELECT * FROM characterEntity")
     fun getAllCharacterEntities(): Flow<List<CharacterEntity>>
 
@@ -32,16 +39,20 @@ interface CharacterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(characters: List<CharacterEntity>)
 }
+
 @Dao
 interface EpisodeDao {
-    @Query("SELECT * FROM episodeEntity WHERE name LIKE '%' || :name || '%'")
-    fun getEpisodesByName(name: String): Flow<List<EpisodeEntity>>
+    @Query(
+        "SELECT * FROM episodeEntity WHERE name LIKE '%' || :name || '%'" +
+                "AND episode LIKE '%' || :season || '%'"
+    )
+    fun getEpisodesByFilter(name: String, season: String): Flow<List<EpisodeEntity>>
+
     @Query("SELECT * FROM episodeEntity")
     fun getAllEpisodes(): Flow<List<EpisodeEntity>>
 
     @Query("SELECT * FROM episodeEntity WHERE id = :id")
     fun getEpisodeById(id: Int): EpisodeEntity
-
 
     @Query("SELECT * FROM EpisodeEntity WHERE url = :url")
     fun getEpisodeByUrl(url: String): EpisodeEntity
@@ -55,10 +66,19 @@ interface EpisodeDao {
 
 @Dao
 interface LocationDao {
-    @Query("SELECT * FROM locationEntity WHERE name LIKE '%' || :name || '%'")
-    fun getLocationByName(name: String): Flow<List<LocationEntity>>
+    @Query(
+        "SELECT * FROM locationEntity WHERE name LIKE '%' || :name || '%'" +
+                "AND type LIKE '%' || :type || '%' AND dimension LIKE '%' || :dimension || '%' "
+    )
+    fun getLocationByFilter(
+        name: String,
+        type: String,
+        dimension: String
+    ): Flow<List<LocationEntity>>
+
     @Query("SELECT * FROM locationEntity WHERE id = :id")
     fun getLocationById(id: Int): LocationEntity
+
     @Query("SELECT * FROM LocationEntity")
     fun getAllLocations(): Flow<List<LocationEntity>>
 

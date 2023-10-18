@@ -1,7 +1,6 @@
 package com.example.rickandmorty.location.details
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,17 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmorty.BaseFragment
 import com.example.rickandmorty.Constants
-import com.example.rickandmorty.R
 import com.example.rickandmorty.dao.AppDatabase
-import com.example.rickandmorty.databinding.FragmentEpisodeDetailsBinding
 import com.example.rickandmorty.databinding.FragmentLocationDetailsBinding
 import com.example.rickandmorty.episode.details.EpisodeDetailsCharacterAdapter
-import com.example.rickandmorty.episode.details.EpisodeDetailsViewModel
 import com.example.rickandmorty.network.isOnline
-import com.example.rickandmorty.network.response.Episode
 import com.example.rickandmorty.network.response.Location
 import kotlinx.coroutines.launch
-
 
 class LocationDetailsFragment : BaseFragment() {
     private lateinit var binding: FragmentLocationDetailsBinding
@@ -28,7 +22,6 @@ class LocationDetailsFragment : BaseFragment() {
         LocationDetailsViewModelFactory(AppDatabase.getDataBase(requireContext()))
     }
     private lateinit var characterAdapter: EpisodeDetailsCharacterAdapter
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +33,7 @@ class LocationDetailsFragment : BaseFragment() {
             loadLocation(locationId)
         }
         binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.noInternet.visibility = View.GONE
             if (locationId != null) {
                 loadLocation(locationId)
             }
@@ -70,7 +64,6 @@ class LocationDetailsFragment : BaseFragment() {
     }
 
     private fun loadData(location: Location) {
-
         lifecycleScope.launch {
             viewModel.getCharacterForEpisode(location, isOnline(requireContext()))
                 .collect { characters ->
@@ -79,4 +72,9 @@ class LocationDetailsFragment : BaseFragment() {
         }
     }
 
+    private fun noInternetMessage() {
+        if (!isOnline(requireContext())) {
+            binding.noInternet.visibility = View.VISIBLE
+        }
+    }
 }

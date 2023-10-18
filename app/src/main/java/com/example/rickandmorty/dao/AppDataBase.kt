@@ -8,8 +8,11 @@ import com.example.rickandmorty.dao.entity.CharacterEntity
 import com.example.rickandmorty.dao.entity.EpisodeEntity
 import com.example.rickandmorty.dao.entity.LocationEntity
 
-
-@Database(entities = [CharacterEntity::class, EpisodeEntity::class, LocationEntity::class], version = 2, exportSchema = false)
+@Database(
+    entities = [CharacterEntity::class, EpisodeEntity::class, LocationEntity::class],
+    version = 2,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun characterDao(): CharacterDao
     abstract fun episodeDao(): EpisodeDao
@@ -18,7 +21,6 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
-
         fun getDataBase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -28,11 +30,8 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                     .build()
                 INSTANCE = instance
-
                 instance
             }
         }
     }
-
-
 }

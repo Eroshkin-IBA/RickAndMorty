@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil.ImageLoader
 import coil.load
 import com.example.rickandmorty.BaseFragment
 import com.example.rickandmorty.Constants
@@ -16,11 +16,9 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.dao.AppDatabase
 import com.example.rickandmorty.databinding.FragmentCharacterDetailsBinding
 import com.example.rickandmorty.helpers.extractIdFromUri
-import com.example.rickandmorty.helpers.loadWithFallback
 import com.example.rickandmorty.network.isOnline
 import com.example.rickandmorty.network.response.Character
 import kotlinx.coroutines.launch
-
 
 class CharacterDetails : BaseFragment() {
     private val viewModel: CharacterDetailsViewModel by viewModels {
@@ -32,20 +30,18 @@ class CharacterDetails : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = FragmentCharacterDetailsBinding.inflate(inflater, container, false)
-        val view = binding.root
-
         val characterId = arguments?.getInt(Constants.CHARACTER)
         episodeAdapter = CharacterDetailsEpisodeAdapter()
         loadCharacter(characterId!!)
         binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.noInternet.visibility = View.GONE
             loadCharacter(characterId!!)
             noInternetMessage()
             binding.swipeRefreshLayout.isRefreshing = false
         }
         noInternetMessage()
-        return view
+        return binding.root
     }
 
     private fun loadCharacter(characterId: Int) {
@@ -64,15 +60,23 @@ class CharacterDetails : BaseFragment() {
                         gender.text = "Gender: ${character.gender}"
                         locationName.text = "Location: ${character.location.name}"
                         locationName.setOnClickListener {
-                            val bundle = Bundle()
-                            bundle.putInt(
-                                Constants.LOCATION,
-                                extractIdFromUri(character.location.url)
-                            )
-                            findNavController().navigate(
-                                R.id.action_characterDetails_to_locationDetailsFragment,
-                                bundle
-                            )
+                            if (character.location.url.isNotEmpty()) {
+                                val bundle = Bundle()
+                                bundle.putInt(
+                                    Constants.LOCATION,
+                                    extractIdFromUri(character.location.url)
+                                )
+                                findNavController().navigate(
+                                    R.id.action_characterDetails_to_locationDetailsFragment,
+                                    bundle
+                                )
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    R.string.unknownLocation,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                         recyclerView.adapter = episodeAdapter
                         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -89,4 +93,9 @@ class CharacterDetails : BaseFragment() {
         }
     }
 
+    private fun noInternetMessage() {
+        if (!isOnline(requireContext())) {
+            binding.noInternet.visibility = View.VISIBLE
+        }
+    }
 }

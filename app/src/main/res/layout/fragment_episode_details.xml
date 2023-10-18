@@ -13,6 +13,15 @@
         android:background="@color/grey"
         android:orientation="vertical"
         tools:context=".character.details.CharacterDetails">
+        <TextView
+            android:id="@+id/noInternet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_internet"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:background="@color/red"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/name"

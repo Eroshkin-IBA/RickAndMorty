@@ -6,13 +6,11 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.rickandmorty.Constants
 import com.example.rickandmorty.R
 import com.example.rickandmorty.dao.entity.CharacterEntity
 import com.example.rickandmorty.databinding.CharacterLayoutBinding
-import com.example.rickandmorty.network.response.Episode
 
 class LocalCharacterAdapter : ListAdapter<CharacterEntity, CharacterViewHolder>(DiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
@@ -27,13 +25,11 @@ class LocalCharacterAdapter : ListAdapter<CharacterEntity, CharacterViewHolder>(
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val currChar = getItem(position)
         holder.binding.apply {
-
             holder.itemView.apply {
                 name.text = "${currChar.name}"
                 species.text = "Species: ${currChar.species}"
                 status.text = "Status: ${currChar.status}"
                 gender.text = "Gender: ${currChar.gender}"
-
                 val imageLink = currChar.image
                 imageView.load(imageLink) {
                     placeholder(R.drawable.loading_animation)
@@ -49,12 +45,10 @@ class LocalCharacterAdapter : ListAdapter<CharacterEntity, CharacterViewHolder>(
                         bundle
                     )
                 }
-
             }
-
         }
-
     }
+
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<CharacterEntity>() {
             override fun areItemsTheSame(

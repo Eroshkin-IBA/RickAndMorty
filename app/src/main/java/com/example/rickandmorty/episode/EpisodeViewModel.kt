@@ -16,14 +16,15 @@ import com.example.rickandmorty.network.response.Episode
 import com.example.rickandmorty.paging.RickyMortyPagingSource
 import kotlinx.coroutines.flow.Flow
 
-class EpisodeViewModel(private val appDatabase: AppDatabase): ViewModel() {
+class EpisodeViewModel(private val appDatabase: AppDatabase) : ViewModel() {
     val listData = Pager(PagingConfig(pageSize = 1)) {
-        RickyMortyPagingSource<Episode>(AppModule.provideRetrofitInstance(), Constants.EPISODE, appDatabase)
-
+        RickyMortyPagingSource<Episode>(
+            AppModule.provideRetrofitInstance(),
+            Constants.EPISODE,
+            appDatabase
+        )
     }.flow.cachedIn(viewModelScope)
-
     val localData = appDatabase.episodeDao().getAllEpisodes()
-
     fun searchEpisode(filter: Filter): Flow<PagingData<Episode>> {
         return Pager(PagingConfig(pageSize = 1)) {
             RickyMortyPagingSource<Episode>(
@@ -35,10 +36,9 @@ class EpisodeViewModel(private val appDatabase: AppDatabase): ViewModel() {
         }.flow.cachedIn(viewModelScope)
     }
 
-    fun searchEpisodeInCache(name: String): Flow<List<EpisodeEntity>> {
-        return appDatabase.episodeDao().getEpisodesByName(name)
+    fun searchEpisodeInCache(filter: Filter): Flow<List<EpisodeEntity>> {
+        return appDatabase.episodeDao().getEpisodesByFilter(filter.name, "S" + filter.season)
     }
-
 }
 
 class EpisodeViewModelFactory(private val appDatabase: AppDatabase) : ViewModelProvider.Factory {

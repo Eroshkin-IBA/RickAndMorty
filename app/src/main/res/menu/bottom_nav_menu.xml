@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/characterFragment"
+        android:id="@+id/character_nav_graph"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_person_24"
         android:title="@string/character" />
     <item
-        android:id="@+id/locationFragment"
+        android:id="@+id/location_nav_graph"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_location_city_24"
         android:title="@string/location" />
     <item
-        android:id="@+id/episodeFragment"
+        android:id="@+id/episode_nav_graph"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_monitor_24"

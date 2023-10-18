@@ -1,9 +1,7 @@
 package com.example.rickandmorty.episode.details
 
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.rickandmorty.character.details.CharacterDetailsViewModel
 import com.example.rickandmorty.dao.AppDatabase
 import com.example.rickandmorty.helpers.characterEntityToCharacter
 import com.example.rickandmorty.helpers.convertCharacterListToEntityList
@@ -21,13 +19,11 @@ import retrofit2.Response
 
 class EpisodeDetailsViewModel(private val appDatabase: AppDatabase) : ViewModel() {
     private val apiService: ApiService = AppModule.provideRetrofitInstance()
-
     fun getEpisodeById(episodeId: Int, isOnline: Boolean): Flow<Episode> = flow {
         val localEpisode = withContext(Dispatchers.IO) {
             appDatabase.episodeDao().getEpisodeById(episodeId)
         }
         if (localEpisode != null) emit(episodeEntityToEpisode(localEpisode))
-
         if (isOnline) {
             val episodeResponse: Response<Episode> = apiService.getEpisodeById(episodeId)
             if (episodeResponse.isSuccessful) {
@@ -38,29 +34,34 @@ class EpisodeDetailsViewModel(private val appDatabase: AppDatabase) : ViewModel(
 
     fun getCharacterForEpisode(episode: Episode, isOnline: Boolean): Flow<List<Character>> = flow {
         val characters = mutableListOf<Character>()
-
-        if (isOnline) {
-            episode.characters.forEach {
-                val characterId = extractIdFromUri(it)
-                val episodeResponse: Response<Character> = apiService.getCharacterById(characterId)
-                if (episodeResponse.isSuccessful) {
-                    characters.add(episodeResponse.body()!!)
+        try {
+            if (isOnline) {
+                episode.characters.forEach {
+                    val characterId = extractIdFromUri(it)
+                    val episodeResponse: Response<Character> =
+                        apiService.getCharacterById(characterId)
+                    if (episodeResponse.isSuccessful) {
+                        characters.add(episodeResponse.body()!!)
+                    }
+                    emit(characters)
                 }
-                emit(characters)
-            }
-            withContext(Dispatchers.IO) {
-                appDatabase.characterDao().insertAll(convertCharacterListToEntityList(characters))
-            }
-        } else {
-            episode.characters.forEach {
-                val characterEntity = withContext(Dispatchers.IO) {
-                    appDatabase.characterDao().getCharacterByUrl(it)
+                withContext(Dispatchers.IO) {
+                    appDatabase.characterDao()
+                        .insertAll(convertCharacterListToEntityList(characters))
                 }
-                if (characterEntity != null) {
-                    characters.add(characterEntityToCharacter(characterEntity))
+            } else {
+                episode.characters.forEach {
+                    val characterEntity = withContext(Dispatchers.IO) {
+                        appDatabase.characterDao().getCharacterByUrl(it)
+                    }
+                    if (characterEntity != null) {
+                        characters.add(characterEntityToCharacter(characterEntity))
+                    }
+                    emit(characters)
                 }
-                emit(characters)
             }
+        } catch (e: Exception) {
+            println(e)
         }
     }
 }
