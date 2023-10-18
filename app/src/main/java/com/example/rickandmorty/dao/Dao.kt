@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface CharacterDao {
     @Query(
         "SELECT * FROM characterEntity WHERE name LIKE '%' || :name || '%' " +
-                "AND gender LIKE '%' || :gender || '%' " +
+                "AND gender LIKE :gender " +
                 "AND status LIKE '%' || :status || '%' " +
                 "AND species LIKE '%' || :species || '%'"
     )
